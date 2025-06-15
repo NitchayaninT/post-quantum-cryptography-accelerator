@@ -1,0 +1,20 @@
+Pretum 14/7/25
+Topic : Understanding the Verilog Implementation of SHAKE128 Using the cSHAKE-core Framework
+Authors : Shanquan Tian, Xiayuan Wen, Jakub Szefer and Sanjay Deshpande
+github : https://github.com/caslab-code/cshake-core
+1. Overview slide: Introduce cSHAKE-core and its purpose.
+2. Diagram the flow: Seed → absorb FSM → Keccak rounds → squeeze FSM.
+3. Walk through code : 
+    keccak_top.v       // system overview 
+    keccak_pkg.v       // defines state width and slicing : What RATE, CAPACITY, and STATE_WIDTH mean
+    keccak_math.v      // core permutation
+    control_path.v     // FSM: absorb → permute → squeeze
+4. Performance table: Reproduce resource vs. latency data for different PARALLEL_SLICES.
+
+Notes : 
+In keccak_top.v, two major modules are instantiated:
+    control_path.v → controls the flow (FSM)
+    data_path.v → handles Keccak state, input absorption, and output selection
+Show how control_path, data_path, and parameters are connected
+Mention how seed input is wired in
+
