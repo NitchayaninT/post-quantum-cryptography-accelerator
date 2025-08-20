@@ -1,0 +1,2 @@
+1. d (32 bytes, true randomness).
+2. Expand with G = SHA3-512 to get two seeds: ρ 32 bytes(for the public matrix) and σ 32 bytes(for noise).
