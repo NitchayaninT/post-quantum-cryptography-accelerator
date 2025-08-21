@@ -2,7 +2,6 @@
 # Step 2 : hash the previous 32-byte with SHA3-512 to split into rho (first 32 bytes) and sigma (last 32 bytes)
 
 import secrets, hashlib #secrets is used to generate secure random numbers for managing secrets
-from bitstring import BitArray  
 
 # gets seed and coins
 def generate_rho_sigma():
@@ -14,21 +13,21 @@ def generate_rho_sigma():
 # generate shake128
 def shake128_hash(bytes_data, output_len):
     shake128 = hashlib.shake_128()
-    shake128.update(BitArray(hex=bytes_data).bin)
+    shake128.update(bytes_data)
     # Generate a hash of the desired length
     hash_output = shake128.digest(output_len)
     print("SHAKE128 Hash:", hash_output.hex())
-    print("Bytes Count:", len(hash_output.hex()))
+    print("Bytes Count:", len(hash_output))
     return hash_output
 
 # generate shake256 (uses in Kyber1024 only to gen noise)
 def shake256_hash(bytes_data, output_len):
     shake256 = hashlib.shake_128()
-    shake256.update(BitArray(hex=bytes_data).bin)
+    shake256.update(bytes_data)
     # Generate a hash of the desired length
     hash_output = shake256.digest(output_len)
     print("SHAKE256 Hash:", hash_output.hex())
-    print("Bytes Count:", len(hash_output.hex()))
+    print("Bytes Count:", len(hash_output))
     return hash_output
 
 # MAIN
