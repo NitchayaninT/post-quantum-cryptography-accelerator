@@ -3,6 +3,10 @@
 
 import secrets, hashlib #secrets is used to generate secure random numbers for managing secrets
 
+# bytes to bits converter
+def bytes_to_bits(bytes_data):
+    return ''.join(f'{byte:08b}' for byte in bytes_data)
+
 # gets seed and coins
 def generate_rho_sigma():
     random = secrets.token_bytes(32) #Return a random byte string containing 32 number of bytes (PRNG)
@@ -30,9 +34,35 @@ def shake256_hash(bytes_data, output_len):
     print("Bytes Count:", len(hash_output))
     return hash_output
 
+# transform bytes stream from SHAKE to polynomial with 256 coefficients
+def rejection_sampling(bytes_data,q,n):
+    i = 0
+    j = 0
+    coef={}
+    while (j < n) & (i + 2 < len(bytes_data)):
+        # d1 and d2 has 12 bits, value 0-4095
+        d1 = bytes_data[i] | ((bytes_data[i+1]& 0x0F) << 8)
+        print("d1=" + str(d1))
+        d2 = ((bytes_data[i+1]) >> 4) | ((bytes_data[i+2]) << 4)
+        print("d2=" + str(d2))
+        # Rejection rule
+        if d1 < q :
+            coef[j] = d1
+            j+=1
+        if d2 < q & j < n:
+            coef[j] = d2
+            j+=1
+        i+=3
+    return coef
+# def cbd():
+
+
 # MAIN
 rho, sigma = generate_rho_sigma()
-# Generate A 
-public_matrix_bytes = shake128_hash(rho,32)
-# Generate noise char
+# Generate bytes stream for A 
+public_matrix_bytes = shake128_hash(rho,672)
+# Generate bytes stream for noise char
 noise_bytes = shake256_hash(sigma,32)
+# for Kyber, q = 3329, n = 256
+poly_public_matrix = rejection_sampling(public_matrix_bytes,3329,256)
+print(poly_public_matrix)
