@@ -1,3 +1,4 @@
+// Kyber Parameter default we use Kyber-768
 parameter KYBER_K = 256;
 parameter KYBER_N = 3;
 parameter KYBER_Q = 3329;
