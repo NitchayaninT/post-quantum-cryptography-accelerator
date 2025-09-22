@@ -14,7 +14,7 @@ module pre_encryption (
 );
 
   // Internal variable between module
-  wire sha3_valid0, sha3_valid1, sha3_valid2;
+  wire sha3_valid[3];
   wire [KYBER_N - 1:0] hash_ek;
   wire [(2 * KYBER_N) - 1:0] buf0; // store hash(ek),msg
   wire [(2 * KYBER_N) - 1:0] buf1; // store coin,pre_k
@@ -25,7 +25,7 @@ module pre_encryption (
       .clk(clk),
       .in(rand_in),
       .out(msg),
-      .valid(sha3_valid0)
+      .valid(sha3_valid[0])
   );
 
   // get hash(ek)
@@ -35,19 +35,22 @@ module pre_encryption (
       .clk(clk),
       .in(encryption_key),
       .out(hash_ek),
-      .valid(sha3_valid1)
+      .valid(sha3_valid[1])
   );
 
   sha3_512 sha3_uut3 (
       .clk(clk),
       .in(buf1),
       .out(buf2),
-      .valid(sha3_valid2)
+      .valid(sha3_valid[2])
   );
 
   // Behavior of the module
   always @(posedge clk) begin
-    ...
+    if(rst) begin
+
+    end
+
   end
 endmodule
 
