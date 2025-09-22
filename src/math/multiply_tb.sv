@@ -18,7 +18,7 @@ module multiplication_tb;
     in1 = 0;
     in2 = 0;
 
-    //test vector 
+    //test vector
     #10 in1 = 8'h01; in2 = 8'h01; //1*1
     #10 in1 = 8'h02; in2 = 8'h03; //2*3
     #10 in1 = 8'hF4; in2 = 8'h3D; //random
@@ -28,7 +28,7 @@ module multiplication_tb;
   initial begin
       $display("Time\tin1\tin2\tout");
       $monitor("%0t\t%h\t%h\t%h", $time, in1, in2, out);
-      $dumpfile("tb_multiplication.vcd");  // VCD file name
+      $dumpfile("dump.vcd");  // VCD file name
       $dumpvars(0, tb_multiplication);      // Dump all signals in the testbench
   end
 endmodule

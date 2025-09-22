@@ -3,12 +3,13 @@
 
 module pre_encryption (
     input clk,
-    input wire start,
-    input wire rst,
-    input wire [(KYBER_N)+(KYBER_K * KYBER_R_WIDTH * KYBER_N)-1:0] encryption_key,
-    input wire [KYBER_N - 1:0] rand_in,
-    output reg [KYBER_N - 1:0] msg,
-    output reg [KYBER_N - 1:0] coin,
+    input start,
+    input rst,
+    input [(KYBER_N)+(KYBER_K * KYBER_R_WIDTH * KYBER_N)-1:0] encryption_key,
+    input [(KYBER_N * KYBER_R_WIDTH) - 1 : 0] t[3],
+    input [KYBER_N - 1:0] rand_in,
+    output [KYBER_N - 1:0] msg,
+    output [KYBER_N - 1:0] coin,
     output reg [KYBER_N - 1:0] pre_k,
     output reg valid
 );
@@ -23,6 +24,7 @@ module pre_encryption (
   // get plain text message
   sha3_256 sha3_uut1 (
       .clk(clk),
+      .start(start),
       .in(rand_in),
       .out(msg),
       .valid(sha3_valid[0])
