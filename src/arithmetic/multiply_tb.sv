@@ -1,14 +1,14 @@
 `timescale 1ns/1ps
 
-module multiplication_tb;
-  parameter WIDTH = 8;
-  
-  // testbench signals
+module multiply_tb;
+  parameter int WIDTH = 8;
+
+ // testbench signals
   reg[WIDTH-1:0] in1;
   reg[WIDTH-1:0] in2;
   reg[(2*WIDTH)-1:0] out;
 
-  multiplication #(.WIDTH(WIDTH)) uut (
+  multiply #(.WIDTH(WIDTH)) uut (
     .in1(in1),
     .in2(in2),
     .out(out)

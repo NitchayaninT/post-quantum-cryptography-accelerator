@@ -17,7 +17,15 @@ module add (
     output [(`KYBER_N * 16) - 1 : 0] v
 );
 
-  reg [1:0] state = 0;
+   reg [2:0] sel;
+   multiplexer4x4 uut0(
+     .selector(sel),
+     .in0(x[0]),
+     .in1(x[1]),
+     .in2(x[2]),
+     .in3(y),
+     .in4(v)
+     );
   reg [(`KYBER_N * 16) - 1 : 0] buffer[3] = 0;
   // Only use on set of module
 
@@ -30,6 +38,7 @@ module add (
       .sum(buffer[2])
       );
   end
+
   always @(posedge clk) begin
     if (enable) begin
       case (state)
