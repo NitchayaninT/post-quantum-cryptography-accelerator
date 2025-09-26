@@ -10,46 +10,51 @@ module add (
     input enable,
     input [(`KYBER_N * 16) - 1 : 0] x[3],  // old syntax is x[0:2]
     input [(`KYBER_N * 16) - 1 : 0] y,
-    input [(`KYBER_N * `KYBER_R_WIDTH)-1:0] poly_msg,
+    input [(`KYBER_N * `KYBER_R_WIDTH)-1:0] msg_poly,
     input [(`KYBER_N * `KYBER_SPOLY_WIDTH) -1 : 0] e_1[3],
     input [(`KYBER_N * `KYBER_SPOLY_WIDTH) -1 : 0] e_2,
-    output [(`KYBER_N * 16) - 1 : 0] u[3],
-    output [(`KYBER_N * 16) - 1 : 0] v
+    output reg [(`KYBER_N * 16) - 1 : 0] u[3],
+    output reg [(`KYBER_N * 16) - 1 : 0] v
 );
 
-   reg [2:0] sel;
-   multiplexer4x4 uut0(
-     .selector(sel),
-     .in0(x[0]),
-     .in1(x[1]),
-     .in2(x[2]),
-     .in3(y),
-     .in4(v)
-     );
-  reg [(`KYBER_N * 16) - 1 : 0] buffer[3] = 0;
-  // Only use on set of module
+  reg [(`KYBER_N * 12) - 1 : 0] in_buf0, in_buf1;
+  reg [(`KYBER_N * 13) - 1 : 0] out_buf;
+
+  reg[2:0] state;
+
+  multiplexer5x1 mux_uut(
+    .in0(x[0]),
+    .in1(x[1]),
+    .in2(x[2]),
+    .in3(y),
+    .in4(v),
+    .out(in_buf0)
+    );
+
+  multiplexer5x1_small mux_small_uut(
+    .in0(e_1[0]),
+    .in1(e_1[1]),
+    .in2(e_1[2]),
+    .in3(e_2),
+    .in4(msg_poly),
+    .out(in_buf1)
+    );
+  // This is cla_adder for compute y + msg_poly
+  cla_adder cla_adder0 (
+      .in1(in_buf0),
+      .in2(in_buf1),
+      .sum(out_buf)
+  );
 
   genvar i;
-  for (i = 0; i < 255; i = i + 1) begin : g_cla_adder
-    cla_adder cla_adder[i](
-      .in1(buffer[0]),
-      .in2(buffer[1]),
-      .carry_in(0),
-      .sum(buffer[2])
-      );
-  end
-
   always @(posedge clk) begin
     if (enable) begin
       case (state)
-        2'b00 : begin
-          buffer[0] = y;
-          buffer[1] = x[0];
-          buffer[2] = v;
-
-
+        3'd0: begin
+          v = buffer;
+          state = 3'd1;
         end
-        default : e_1 <= z;
+        default: e_1 <= z;
       endcase
 
     end

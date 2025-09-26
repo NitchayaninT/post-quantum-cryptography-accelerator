@@ -9,14 +9,14 @@ module cla_adder #(
 ) (
     in1,
     in2,
-    carry_in,
+    //carry_in,
     sum
     //carry_out
 );
 
   input [DATA_WID - 1:0] in1;
   input [DATA_WID - 1:0] in2;
-  input carry_in;
+  //input carry_in;
   output [DATA_WID :0] sum; // modified this bit width from DATA_WID-1 to DATA_WIDTH
   //output carry_out;
 
@@ -29,7 +29,7 @@ module cla_adder #(
   genvar j, i;
   generate
     //assume carry_tmp in is zero
-    assign carry_tmp[0] = carry_in;
+    assign carry_tmp[0] = 0;//carry_in;
 
     //carry generator
     for (j = 0; j < DATA_WID; j = j + 1) begin : g_carry
