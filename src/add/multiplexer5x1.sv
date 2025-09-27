@@ -5,7 +5,7 @@
 `include "params.vh"
 
 module multiplexer5x1 (
-    input [1:0] selector,
+    input [2:0] selector,
     input [(`KYBER_N * 12) - 1 : 0] in0,
     input [(`KYBER_N * 12) - 1 : 0] in1,
     input [(`KYBER_N * 12) - 1 : 0] in2,
@@ -16,10 +16,11 @@ module multiplexer5x1 (
 
   always_comb begin
     case (selector)
-      0: out = {1'b0, in0};
-      1: out = {1'b0, in1};
-      2: out = {1'b0, in2};
-      3: out = {1'b0, in3};
+      0: out = in0;
+      1: out = in1;
+      2: out = in2;
+      3: out = in3;
+      4: out = in4;
       default: out = 'x;
     endcase
   end

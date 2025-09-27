@@ -17,4 +17,4 @@
 `define DELAY 10
 
 // Montgomery
-`define MONTGOMERY_R 4048
+`define MONTGOMERY_R 4096

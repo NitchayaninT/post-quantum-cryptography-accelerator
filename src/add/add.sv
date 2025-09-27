@@ -20,25 +20,8 @@ module add (
   reg [(`KYBER_N * 12) - 1 : 0] in_buf0, in_buf1;
   reg [(`KYBER_N * 13) - 1 : 0] out_buf;
 
-  reg[2:0] state;
+  reg [2:0] state;
 
-  multiplexer5x1 mux_uut(
-    .in0(x[0]),
-    .in1(x[1]),
-    .in2(x[2]),
-    .in3(y),
-    .in4(v),
-    .out(in_buf0)
-    );
-
-  multiplexer5x1_small mux_small_uut(
-    .in0(e_1[0]),
-    .in1(e_1[1]),
-    .in2(e_1[2]),
-    .in3(e_2),
-    .in4(msg_poly),
-    .out(in_buf1)
-    );
   // This is cla_adder for compute y + msg_poly
   cla_adder cla_adder0 (
       .in1(in_buf0),
@@ -46,15 +29,40 @@ module add (
       .sum(out_buf)
   );
 
+  // seperate in0, and in4 because to avoid invalid state
+  multiplexer5x1 mux_uut (
+      .selector(state),
+      .in0(y),
+      .in1(x[0]),
+      .in2(x[1]),
+
+      .in3(x[2]),
+      .in4(v),
+      .out(in_buf0)
+  );
+
+  multiplexer5x1_small mux_small_uut (
+    .selector(state),
+      .in0(e_2),
+      .in1(e_1[0]),
+      .in2(e_1[1]),
+      .in3(e_1[2]),
+      .in4(msg_poly),
+      .out(in_buf1)
+  );
+
   genvar i;
   always @(posedge clk) begin
     if (enable) begin
       case (state)
-        3'd0: begin
-          v = buffer;
+        3'd001: begin
+           
           state = 3'd1;
         end
-        default: e_1 <= z;
+        3'b010: begin
+          
+        end
+        default: e_1 <= 'x;
       endcase
 
     end
