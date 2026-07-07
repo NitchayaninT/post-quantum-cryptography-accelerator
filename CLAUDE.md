@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-SystemVerilog FPGA implementation of **Kyber768** (NIST post-quantum KEM), targeting the Arty S7-50 FPGA. The project accelerates the encryption and decryption pipelines of the Kyber768 Key Encapsulation Mechanism.
+SystemVerilog FPGA implementation of **Kyber768** (NIST post-quantum KEM). The project accelerates the encryption and decryption pipelines of the Kyber768 Key Encapsulation Mechanism. The design is verified through simulation only; it does not target a specific FPGA board.
 
 ## Simulation
 
@@ -127,4 +127,4 @@ All sequential stages use: `enable` (input, start signal) → `valid`/`done` (ou
 
 ## FPGA Target
 
-Board: **Arty S7-50** (Xilinx Spartan-7). Synthesis/implementation uses Vivado. Clock constraint: 100 MHz (10 ns period) on `H10`.
+No specific FPGA board is targeted; the design is verified through simulation only. `constraint/` XDC files (Arty S7-50 / Spartan-7) and Vivado synthesis reports remain in the repo from earlier exploratory work but are not part of the current verification flow.
