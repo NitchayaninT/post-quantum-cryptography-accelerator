@@ -188,13 +188,14 @@ kyber768-accelerator-on-fpga/
 ├── pictures/
 ├── presentations/
 ├── reports/
+|   └── decapsulation /
+|   └── encapsulation /
 │   └── main_computation/
 ├── sim_results/
 │   └── hash/
 ├── test/
 │   ├── hash/
 │   └── main_computation/
-├── part.txt
 └── README.md
 ```
 
@@ -290,7 +291,7 @@ Potential future work includes:
 Developed as an undergraduate senior project in Computer Engineering.
 
 ### Members
-1. Pakin Panawattakul
+1. Pakin Panawattanakul
 2. Nitchayanin Thamkunanon
 3. Panupong Sangaphunchai
 
